@@ -1,0 +1,24 @@
+// Fonts
+$font-stack: Helvetica, sans-serif;
+
+// Color Palette
+$cupcake-sage: #609996;
+$cupcake-yellow: #F7D154;
+$cupcake-peach: #ED704D;
+$cupcake-purple: #32274A;
+$cupcake-teal: #B5E5B8;
+
+body {
+    background-color: $cupcake-teal;
+    color: $cupcake-purple;
+}
+
+h1 {
+    font-family: $font-stack;
+    font-size: 72px;
+}
+
+.container {
+    margin: 5%;
+    //background-color: red;
+}

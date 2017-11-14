@@ -21,7 +21,7 @@ class App extends Component {
     return (
       <div className="container">
         <header>
-          <h1>super-serial-app</h1>
+          <h1>Cupcakes Game</h1>
         </header>
         {/*pass the p5 sktech file into the React wrapper
         also pass the ascii prop which will updated based on withTracker below*/}

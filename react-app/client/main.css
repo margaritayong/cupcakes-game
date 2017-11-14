@@ -1,1 +1,10 @@
-/* CSS declarations go here */
+body {
+  background-color: #B5E5B8;
+  color: #32274A; }
+
+h1 {
+  font-family: Helvetica, sans-serif;
+  font-size: 72px; }
+
+.container {
+  margin: 5%; }
