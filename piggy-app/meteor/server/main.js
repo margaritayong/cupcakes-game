@@ -73,7 +73,7 @@ Meteor.methods({
  
 // MQTT
 export const config = {
-  mqttHost: "mqtt://192.168.250.162",
+  mqttHost: "mqtt://127.0.0.1",
   mqttPort: 1883
 };
 
