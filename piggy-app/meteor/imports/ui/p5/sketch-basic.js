@@ -22,10 +22,8 @@ export default function sketch (p5) {
   // send name button
   let nameButton;
 
-
   p5.setup = function() {
     p5.createCanvas(300,400);
-    // p5.serial.on('data', serialEvent);     // callback for when new data arrives
 
     // create the UI
     initUI();
@@ -42,7 +40,6 @@ export default function sketch (p5) {
     p5.textSize(22);
     p5.fill(255);
     p5.text("How was your day?", 10, 30);
-    p5.text("sensor value: " + inData, 30, 60);
 
     p5.textSize(11);
 
@@ -53,9 +50,7 @@ export default function sketch (p5) {
 
     drawUI();
 
-
   }
-  
 
   //
   // initUI
@@ -80,7 +75,6 @@ export default function sketch (p5) {
     nameButton = p5.createButton('send name');
     nameButton.position(25, 320);
     nameButton.mousePressed(sendName);
-
   }
 
   function sendToDisplay() {
