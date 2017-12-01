@@ -7,7 +7,7 @@ const rgbHex = require('rgb-hex');
  
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
-var port = new SerialPort('/dev/cu.usbmodem1421', {
+var port = new SerialPort('/dev/cu.usbmodem1431', {
   baudRate: 9600
 });
 port.pipe(parser);
