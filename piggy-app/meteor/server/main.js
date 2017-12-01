@@ -1,9 +1,7 @@
 import { Meteor } from 'meteor/meteor';
-import Led from '../imports/api/led.js'
-import Coders from '../imports/api/coders.js'
+import Goal from '../imports/api/goal.js'
 import { connect } from 'mqtt/lib/connect';
 import SerialPort from 'serialport';
-const rgbHex = require('rgb-hex');
  
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
@@ -31,9 +29,6 @@ port.on('error', function(err) {
   console.log('Error: ', err.message);
 })
 
-// heres wehre you type in your name
-
-
 // serial event
 function writeSerialData(data) {
   var buffer = Buffer.from(data);
@@ -47,30 +42,16 @@ function writeSerialData(data) {
 
 }
 
-function saveCoderInDataBase(name) {
-  Meteor.call('coders.upsert', name);
+function saveGoalInDataBase(targetGoal) {
+  Meteor.call('goals.upsert', targetGoal);
 }
 
 // meteor
 Meteor.methods({
-  'serial.write'(pixels) {
+  'send.goal'(targetGoal) {
 
-    // global ok?
-    var message = "";
-
-    // get RGB from hex data
-    var hexValue = rgbHex(pixels[0], pixels[1], pixels[2]);
-
-    message = hexValue;
-
-    writeSerialData(message + '|'); // write data to the port
-    client.publish("ledgrid", message); // publish via mqtt
-    
-  },
-  'send.name'(name) {
-
-    console.log("Meteor send.name", name);
-    client.publish("name", name); // publish via mqtt
+    console.log("Meteor send.goal", targetGoal);
+    client.publish("targetGoal", targetGoal); // publish via mqtt
 
   }
 })
@@ -85,9 +66,9 @@ export const config = {
 export const client = connect(config.mqttHost);
 
 function onMessage(topic, message) {
-  if (topic === "name") {
+  if (topic === "targetGoal") {
     console.log("message", message.toString());
-    Meteor.call('coders.upsert',name);
+    Meteor.call('goals.upsert', targetGoal);
   }
 }
 
@@ -96,8 +77,7 @@ client.on('message', Meteor.bindEnvironment(onMessage));
 
 client.on("connect", function() {
   console.log("---- mqtt client connected ----");
-  client.subscribe("ledgrid"); // subscribe to the ledgrid topic
-  client.subscribe("name");
+  client.subscribe("targetGoal"); // subscribe to the targetGoal topic
 })
 
 Meteor.startup(() => {

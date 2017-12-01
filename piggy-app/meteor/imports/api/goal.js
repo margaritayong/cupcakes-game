@@ -1,25 +1,25 @@
 import { Mongo } from 'meteor/mongo';
-export const Coders = new Mongo.Collection('coders');
+export const Goal = new Mongo.Collection('goal');
 import { check } from 'meteor/check';
 
 
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('coders', function codersPublication() {
-    return Coders.find({});
+  Meteor.publish('goal', function goalPublication() {
+    return Goal.find({});
   });
 }
 
 // http://docs.meteor.com/api/collections.html#Mongo-Collection-upsert
 Meteor.methods({
-  'coders.upsert'(name) {
+  'goals.upsert'(targetGoal) {
 
-    Coders.upsert({
-      name: name
+    Goal.upsert({
+      targetGoal: targetGoal
     },
     {
       $set: {
-        name: name,
+        targetGoal: targetGoal,
         updatedAt: new Date(),
       }
     });
