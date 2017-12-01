@@ -17,11 +17,15 @@ class App extends Component {
  
   }
 
+  // this happens when we click the send name button
+  sendName(name) {
+    console.log('App.jsx received name', name);
+    Meteor.call('send.name', name);
+  }
 
   // this happens when we click the render display button
-  sendGoal(targetGoal) {
-    console.log('App.jsx received target goal', targetGoal);
-    Meteor.call('send.goal', targetGoal);
+  renderDisplay(pixels) {
+    Meteor.call('serial.write', pixels);
   }
 
   // render the html to the page
@@ -31,7 +35,7 @@ class App extends Component {
       <div className="container">
         {/*pass the p5 sktech file into the React wrapper
         also pass the ascii prop which will updated based on withTracker below*/}
-        <P5Wrapper sketch={sketch} sendGoal={this.sendGoal} led={this.props.led} />
+        <P5Wrapper sketch={sketch} sendName={this.sendName} renderDisplay={this.renderDisplay} led={this.props.led} />
       </div>
     );
   }

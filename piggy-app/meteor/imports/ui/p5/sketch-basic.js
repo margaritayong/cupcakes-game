@@ -1,6 +1,11 @@
 // pass in p5.js as function argument p5
 export default function sketch (p5) {
 
+  // sliders
+  let rSlider, gSlider, bSlider; // control sliders
+  let r, g, b;  // hue saturation brightness (this is really rgb for testing but should be changed to HSB)
+  let faderVal; // fader Channel 1 and Channel 2
+
   // display size
   let gridWidth = 8;
   let gridHeight = 5;
@@ -9,13 +14,13 @@ export default function sketch (p5) {
   //let ledPixels = []; // updating this to just color for now
   let ledColor = ["255", "255", "255"];
 
+  // button
+  let sendButton;
+
   let localProps = {};
 
-  // send goal button
-  let goalButton;
-
-  // set goal target
-  let targetGoal = 100;
+  // send name button
+  let nameButton;
 
 
   p5.setup = function() {
@@ -29,11 +34,12 @@ export default function sketch (p5) {
 
 
   p5.draw = function() {
-    p5.background(255);
+    p5.background(40);
 
     p5.noStroke();
+    p5.fill(30);
+    p5.rect(0,0,p5.width,40);
     p5.textSize(22);
-<<<<<<< HEAD
     p5.fill(255);
     p5.text("How was your day?", 10, 30);
     p5.text("sensor value: " + inData, 30, 60);
@@ -44,11 +50,6 @@ export default function sketch (p5) {
     r = rSlider.value();
     g = gSlider.value();
     b = bSlider.value();
-=======
-    p5.fill(0);
-    p5.text("What is your goal?", 10, 30);
-    p5.textSize(12);
->>>>>>> c48f911b17af76eee44e3a532c507a7db5832064
 
     drawUI();
 
@@ -60,7 +61,6 @@ export default function sketch (p5) {
   // initUI
   //
   function initUI() {
-<<<<<<< HEAD
     rSlider = p5.createSlider(0, 255, 255);
     gSlider = p5.createSlider(0, 255, 255);
     bSlider = p5.createSlider(0, 255, 255);
@@ -97,17 +97,12 @@ export default function sketch (p5) {
   function sendName() {
     console.log("just clicked send name");
     localProps.sendName('margarita');
-=======
-    goalButton = p5.createButton('send goal');
-    goalButton.position(16, 60);
-    goalButton.mousePressed(sendGoal);
->>>>>>> c48f911b17af76eee44e3a532c507a7db5832064
   }
 
-  function sendGoal() {
-    console.log("just clicked send goal!");
-    localProps.sendGoal(targetGoal);
+  function sendPixels() {
+    console.log("sendPixels");
   }
+
 
   //
   // Draw UI
@@ -115,7 +110,18 @@ export default function sketch (p5) {
   function drawUI() {
 
     // temporary UI and text controls
+    // channel 1 controls
     p5.fill(255);
+    p5.text("red (" + p5.str(r) + ")", 100, 245);
+    p5.text("green (" + p5.str(g) + ")", 100, 265);
+    p5.text("blue (" + p5.str(b) + ")", 100, 285);
+    p5.text("Pick a color", 10, 220);
+
+    p5.fill(r,g,b);
+    p5.rect(10,100,160,100);
+
+    p5.fill(255,255,0); // yellow
+    p5.text("1. COLOR", 10, 80);
 
 
   }
@@ -123,21 +129,13 @@ export default function sketch (p5) {
   // this special function receives data from App.jsx withTracker
   p5.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     console.log("myCustomRedrawAccordingToNewPropsHandler", props, localProps);
-
-    if (!localProps.sendGoal) {
-      localProps.sendGoal = props.sendGoal;
+    
+    if (!localProps.renderDisplay) {
+      localProps.renderDisplay = props.renderDisplay;
     }
 
-
+    if (!localProps.sendName) {
+      localProps.sendName = props.sendName;
+    }
   };
 };
-
-
-
-
-
-
-
-
-
-
