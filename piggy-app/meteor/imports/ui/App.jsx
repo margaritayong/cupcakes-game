@@ -17,7 +17,8 @@ class App extends Component {
  
   }
 
-  // this happens when we click the send name button
+
+  // this happens when we click the render display button
   sendName(name) {
     console.log('App.jsx received name', name);
     Meteor.call('send.name', name);

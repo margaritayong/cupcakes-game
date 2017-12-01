@@ -89,8 +89,8 @@ export default function sketch (p5) {
   }
 
   function sendName() {
-    console.log("just clicked send name");
-    localProps.sendName('margarita');
+    console.log("just clicked send name!");
+    localProps.sendName('carrie');
   }
 
   function sendPixels() {
@@ -123,7 +123,8 @@ export default function sketch (p5) {
   // this special function receives data from App.jsx withTracker
   p5.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     console.log("myCustomRedrawAccordingToNewPropsHandler", props, localProps);
-    
+
+
     if (!localProps.renderDisplay) {
       localProps.renderDisplay = props.renderDisplay;
     }
@@ -131,5 +132,17 @@ export default function sketch (p5) {
     if (!localProps.sendName) {
       localProps.sendName = props.sendName;
     }
+
+
   };
 };
+
+
+
+
+
+
+
+
+
+
