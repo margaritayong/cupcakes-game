@@ -5,11 +5,12 @@ import SerialPort from 'serialport';
  
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
-var port = new SerialPort('/dev/cu.usbmodem1431', {
+var port = new SerialPort('/dev/cu.SLAB_USBtoUART', {
   baudRate: 9600
 });
 port.pipe(parser);
 
+let targetGoal = 100;
 
 // parse the data from serial into meaningful objects
 function onData(data) {
@@ -51,7 +52,7 @@ Meteor.methods({
   'send.goal'(targetGoal) {
 
     console.log("Meteor send.goal", targetGoal);
-    client.publish("targetGoal", targetGoal); // publish via mqtt
+    client.publish("targetGoal", targetGoal.toString()); // publish via mqtt
 
   }
 })
@@ -67,7 +68,8 @@ export const client = connect(config.mqttHost);
 
 function onMessage(topic, message) {
   if (topic === "targetGoal") {
-    console.log("message", message.toString());
+    // console.log("message", message.toString());
+    console.log(message.toString());
     Meteor.call('goals.upsert', targetGoal);
   }
 }
