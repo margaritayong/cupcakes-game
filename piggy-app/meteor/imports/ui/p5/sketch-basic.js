@@ -1,6 +1,6 @@
 // pass in p5.js as function argument p5
 export default function sketch (p5) {
-
+  let coin = {value:0};
   // display size
   let gridWidth = 8;
   let gridHeight = 5;
@@ -35,6 +35,8 @@ export default function sketch (p5) {
     p5.text("What is your goal?", 10, 30);
     p5.textSize(12);
 
+
+
     drawUI();
 
   }
@@ -60,6 +62,7 @@ export default function sketch (p5) {
 
     // temporary UI and text controls
     p5.fill(255);
+    // p5.text(coin.value, p5.width/2-30, p5.height/2-20);
 
 
   }
@@ -70,6 +73,15 @@ export default function sketch (p5) {
 
     if (!localProps.sendGoal) {
       localProps.sendGoal = props.sendGoal;
+    }
+
+    if (props.goal) {
+      targetGoal = props.goal.targetGoal;
+    }
+
+    if (props.coin) {
+      // get the new coin object
+      coin = props.coin;
     }
 
 

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './p5/sketch-basic.js';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Led } from '../api/led.js';
+import { Goal } from '../api/goal.js';
+import { Coins } from '../api/coins.js';
 
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      led: [],
+      coin: {},
+      goal: {},
     };
  
   }
@@ -31,23 +33,26 @@ class App extends Component {
       <div className="container">
         {/*pass the p5 sktech file into the React wrapper
         also pass the ascii prop which will updated based on withTracker below*/}
-        <P5Wrapper sketch={sketch} sendGoal={this.sendGoal} led={this.props.led} />
+        <P5Wrapper sketch={sketch} sendGoal={this.sendGoal} coin={this.props.coin} goal={this.props.goal} />
       </div>
     );
   }
 }
 
 App.defaultProps = {
-  led: [],
+  coin: {},
+  goal: {},
 };
 
 App.propTypes = {
-  led: PropTypes.array.isRequired,
+  coin: PropTypes.object.isRequired,
+  goal: PropTypes.object.isRequired,
 };
 
 export default withTracker(props => {
-  Meteor.subscribe('led');
+  Meteor.subscribe('allData');
   return {
-    led: Led.find({}, { sort: { updatedAt: -1 } }).fetch()[0],
+    coin: Coins.find({}, { sort: { updatedAt: -1 } }).fetch()[0],
+    goal: Goal.find({}).fetch()[0],
   };
 })(App);

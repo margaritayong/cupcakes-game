@@ -12,10 +12,10 @@ if (Meteor.isServer) {
 
 // http://docs.meteor.com/api/collections.html#Mongo-Collection-upsert
 Meteor.methods({
-  'goals.upsert'(targetGoal) {
+  'goals.upsert'(id, targetGoal) {
 
-    Goal.upsert({
-      targetGoal: targetGoal
+    let currentGoal = Goal.upsert({
+      _id: id
     },
     {
       $set: {
@@ -23,5 +23,25 @@ Meteor.methods({
         updatedAt: new Date(),
       }
     });
+    
+    if (currentGoal.insertedId) {
+      return currentGoal.insertedId;
+    } else {
+      return id;
+    }
+  },
+
+  'goals.update.balance'(id, value) {
+
+    Goal.update({
+      _id: id
+    },
+    { 
+      $inc: {
+        balance: value,
+      }
+    
+    });
   }
+
 })

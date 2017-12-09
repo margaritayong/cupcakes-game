@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import Goal from '../imports/api/goal.js'
+import { Goal } from '../imports/api/goal.js';
 import { connect } from 'mqtt/lib/connect';
 import SerialPort from 'serialport';
+import coins from '../imports/api/coins.js';
+import allData from '../imports/api/allData.js';
  
 const Readline = SerialPort.parsers.Readline;
 const parser = new Readline();
@@ -10,7 +12,15 @@ var port = new SerialPort('/dev/cu.SLAB_USBtoUART', {
 });
 port.pipe(parser);
 
-let targetGoal = 100;
+console.log (Goal.find({}).fetch());
+var goal = Goal.find({}).fetch();
+let targetGoal;
+let currentTargetGoal;
+if (goal.length > 0) {
+  targetGoal = goal[0].targetGoal;
+  currentTargetGoal = goal[0]._id;
+}
+
 
 // parse the data from serial into meaningful objects
 function onData(data) {
@@ -44,7 +54,7 @@ function writeSerialData(data) {
 }
 
 function saveGoalInDataBase(targetGoal) {
-  Meteor.call('goals.upsert', targetGoal);
+  currentTargetGoal = Meteor.call('goals.upsert', currentTargetGoal, targetGoal);
 }
 
 // meteor
@@ -72,6 +82,13 @@ function onMessage(topic, message) {
     console.log(message.toString());
     Meteor.call('goals.upsert', targetGoal);
   }
+  if (topic === "coins") {
+    // console.log("message", message.toString());
+    console.log(message.toString());
+    var coinString = message.toString();
+    var coinFloat = parseFloat(coinString);
+    Meteor.call('coins.insert', coinFloat);
+  }
 }
 
 // client callback
@@ -80,6 +97,7 @@ client.on('message', Meteor.bindEnvironment(onMessage));
 client.on("connect", function() {
   console.log("---- mqtt client connected ----");
   client.subscribe("targetGoal"); // subscribe to the targetGoal topic
+  client.subscribe("coins"); // subscribe to the targetGoal topic
 })
 
 Meteor.startup(() => {
