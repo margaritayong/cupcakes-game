@@ -2,7 +2,6 @@ import { Mongo } from 'meteor/mongo';
 export const Goal = new Mongo.Collection('goal');
 import { check } from 'meteor/check';
 
-
 if (Meteor.isServer) {
   // This code only runs on the server
   Meteor.publish('goal', function goalPublication() {

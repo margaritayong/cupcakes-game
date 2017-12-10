@@ -1,6 +1,7 @@
 // pass in p5.js as function argument p5
 export default function sketch (p5) {
   let coin = {value:0};
+
   // display size
   let gridWidth = 8;
   let gridHeight = 5;
@@ -15,7 +16,7 @@ export default function sketch (p5) {
   let goalButton;
 
   // set goal target
-  let targetGoal = 100;
+  let targetGoal = 1.00;
 
   p5.setup = function() {
     p5.createCanvas(300,400);
@@ -24,7 +25,6 @@ export default function sketch (p5) {
     initUI();
 
   }
-
 
   p5.draw = function() {
     p5.background(255);
@@ -35,15 +35,11 @@ export default function sketch (p5) {
     p5.text("What is your goal?", 10, 30);
     p5.textSize(12);
 
-
-
     drawUI();
 
   }
 
-  //
   // initUI
-  //
   function initUI() {
     goalButton = p5.createButton('send goal');
     goalButton.position(16, 60);
@@ -55,15 +51,12 @@ export default function sketch (p5) {
     localProps.sendGoal(targetGoal);
   }
 
-  //
   // Draw UI
-  //
   function drawUI() {
 
     // temporary UI and text controls
     p5.fill(255);
     // p5.text(coin.value, p5.width/2-30, p5.height/2-20);
-
 
   }
 
