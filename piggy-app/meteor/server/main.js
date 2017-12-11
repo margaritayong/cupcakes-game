@@ -49,7 +49,7 @@ function onMessage(topic, message) {
   if (topic === "targetGoal") {
     // console.log("message", message.toString());
     console.log(message.toString());
-    Meteor.call('goals.upsert', targetGoal);
+    saveGoalInDataBase(targetGoal);
   }
   if (topic === "coins") {
     // console.log("message", message.toString());

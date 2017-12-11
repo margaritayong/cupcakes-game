@@ -19,11 +19,12 @@ class App extends Component {
  
   }
 
-
   // this happens when we click the render display button
-  sendGoal(targetGoal) {
+  sendGoal(id, targetGoal) {
     console.log('App.jsx received target goal', targetGoal);
     Meteor.call('send.goal', targetGoal);
+    Meteor.call('goals.upsert', id, targetGoal);
+    console.log(id);
   }
 
   // render the html to the page
