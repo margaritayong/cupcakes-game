@@ -3,12 +3,15 @@ import { Goal } from '../imports/api/goal.js';
 import { connect } from 'mqtt/lib/connect';
 import SerialPort from 'serialport';
 import coins from '../imports/api/coins.js';
+import Name from '../imports/api/name.js';
 import allData from '../imports/api/allData.js';
  
 console.log (Goal.find({}).fetch());
 var goal = Goal.find({}).fetch();
 let targetGoal;
 let currentTargetGoal;
+let user;
+let name;
 if (goal.length > 0) {
   targetGoal = goal[0].targetGoal;
   currentTargetGoal = goal[0]._id;
@@ -26,6 +29,10 @@ function saveGoalInDataBase(targetGoal) {
   currentTargetGoal = Meteor.call('goals.upsert', currentTargetGoal, targetGoal);
 }
 
+function saveNameInDataBase(name) {
+  user = Meteor.call('name.upsert', user);
+}
+
 // meteor
 Meteor.methods({
   'send.goal'(targetGoal) {
@@ -33,13 +40,20 @@ Meteor.methods({
     console.log("Meteor send.goal", targetGoal);
     client.publish("targetGoal", targetGoal.toString()); // publish via mqtt
 
+  },
+  'send.name'(name) {
+
+    console.log("Meteor send.name", name);
+    client.publish("name", name); // publish via mqtt
+
   }
 })
 
  
 // MQTT
 export const config = {
-  mqttHost: "mqtt://172.20.10.5",
+  // mqttHost: "mqtt://172.20.10.5",
+  mqttHost: "mqtt://192.168.2.11",
   mqttPort: 1883
 };
 
@@ -58,6 +72,9 @@ function onMessage(topic, message) {
     var coinFloat = parseFloat(coinString);
     Meteor.call('coins.insert', coinFloat);
   }
+  if (topic === "name") {
+    Meteor.call('name.upsert', message.toString());
+  }
 }
 
 // client callback
@@ -66,7 +83,8 @@ client.on('message', Meteor.bindEnvironment(onMessage));
 client.on("connect", function() {
   console.log("---- mqtt client connected ----");
   client.subscribe("targetGoal"); // subscribe to the targetGoal topic
-  client.subscribe("coins"); // subscribe to the targetGoal topic
+  client.subscribe("coins");
+  client.subscribe("name");
 })
 
 Meteor.startup(() => {

@@ -3,63 +3,71 @@ export default function sketch (p5) {
   let coin = {value:0};
   let id;
 
-  // display size
-  let gridWidth = 8;
-  let gridHeight = 5;
-
   let localProps = {};
-
-  // send goal button
   let goalButton;
-
-  // set new goal target
   let newTargetGoal; 
-
+  var targetWidth;
   var input, button, greeting;
+  var username;
+  var name;
 
   p5.setup = function() {
-    // create canvas
-    p5.createCanvas(710, 400);
+    p5.createCanvas(800, 600);
+    p5.colorMode(255);
 
-    input = p5.createInput();
-    input.position(20, 65);
+    greeting = p5.createElement('h1', 'Hello, what is your name?');
+    greeting.position(300, 100);
+    greeting.addClass('introText');
 
-    button = p5.createButton('submit');
-    button.position(input.x + input.width, 65);
-    button.mousePressed(sendGoal);
+    username = p5.createInput();
+    username.position(490, 400);
+    username.addClass('usernameBox');
 
-    greeting = p5.createElement('h2', 'what is your goal?');
-    greeting.position(20, 5);
-
-    p5.textAlign(p5.CENTER);
-    p5.textSize(50);
-
+    nameButton = p5.createButton('submit');
+    nameButton.position(650, 490);
+    nameButton.addClass('nameBtn');
+    nameButton.mousePressed(sendName);
   }
 
   p5.draw = function() {
-    
+
   }
 
-  // function greet() {
-  // var name = input.value();
-  // greeting.html('hello '+name+'!');
-  // input.value('');
+  function sendName() {
+    p5.createCanvas(screen.width, screen.height);
+    p5.colorMode(255);
 
-  // for (var i=0; i<200; i++) {
-  //   p5.push();
-  //   p5.fill(p5.random(255), 255, 255);
-  //   p5.translate(p5.random(p5.width), p5.random(p5.height));
-  //   p5.rotate(p5.random(2*p5.PI));
-  //   p5.text(name, 0, 0);
-  //   p5.pop();
-  // }
-// }
+    name = username.value();
+    greeting.html('Hello '+name+'!');
+    username.value('');
 
-  // initUI
-  function initUI() {
-    goalButton = p5.createButton('send goal');
-    goalButton.position(16, 60);
-    goalButton.mousePressed(sendGoal);
+    console.log("just clicked sign up!");
+    console.log(name);
+    localProps.sendName(name);
+
+    username.addClass('hide');
+    nameButton.addClass('hide');
+    setGoal();
+
+  }
+
+  function setGoal() {
+    
+    inputGoal = p5.createElement('h2', "How much would you like to save?");
+    inputGoal.position(500, 280);
+    p5.textAlign(p5.CENTER);
+
+    
+    input = p5.createInput('', "$");
+    input.position(500, 340);
+    input.addClass('usernameBox');
+
+
+    button = p5.createButton('submit');
+    button.position(650, 430);
+    button.addClass('nameBtn');
+    button.mousePressed(sendGoal);
+
   }
 
   function sendGoal() {
@@ -69,16 +77,72 @@ export default function sketch (p5) {
     console.log("just clicked send goal!");
     console.log(newTargetGoal);
     localProps.sendGoal(id, newTargetGoal);
+
+    inputGoal.addClass('hide');
+    input.addClass('hide');
+    button.addClass('hide');
+    greeting.addClass('hide');
+    saveGoal();
+  
   }
 
-  // Draw UI
-  function drawUI() {
+  function saveGoal() {
 
-    // temporary UI and text controls
-    p5.fill(255);
-    // p5.text(coin.value, p5.width/2-30, p5.height/2-20);
+    p5.createCanvas(screen.width, screen.height);
+    p5.background(242, 184, 162);
+    savedGoal = p5.createElement('h1', "Goal saved!");
+    savedGoal.position(500, 120);
+    p5.textAlign(p5.CENTER);
+
+    nextButton = p5.createButton('see progress');
+    nextButton.position(620, 280);
+    nextButton.addClass('progressBtn');
+    nextButton.mousePressed(showProgress);
 
   }
+
+  function showProgress() {
+    
+    savedGoal.addClass('hide');
+    nextButton.addClass('hide');
+
+    p5.createCanvas(screen.width, screen.height);
+    p5.background(242, 209, 179);
+
+    currentBalance = p5.createElement('h1', "Your balance is ");
+    currentBalance.position(400, 120);
+    p5.textAlign(p5.CENTER);
+
+    var targetWidth = 300;
+    var coinValue = coin.value;
+    var coinWidth = (coinValue/targetGoal)*300;
+    
+    var coinString = p5.str(coinValue);
+    p5.textAlign(p5.CENTER);
+    var displayCoin = p5.createElement('h1', coinString);
+
+    displayCoin.position(600, 200);
+    displayCoin.addClass('balance');
+    
+    // key legend
+    p5.fill(85, 122, 147);
+    p5.textSize(20);
+    p5.text("0", 530, 470);
+    p5.text(p5.str(targetGoal), 830, 470);
+
+    // target bar
+    p5.fill(85, 122, 147);
+    p5.rectMode(p5.CENTER);
+    p5.strokeWeight(0);
+    p5.rect(680, 440, targetWidth, 20, 5);
+
+    // progress bar
+    p5.fill(242, 114, 136);
+    p5.rectMode(p5.CORNER);
+    p5.strokeWeight(0);
+    p5.rect(530, 430, coinWidth, 20, 5);
+  }
+
 
   // this special function receives data from App.jsx withTracker
   p5.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -88,7 +152,9 @@ export default function sketch (p5) {
       localProps.sendGoal = props.sendGoal;
     }
 
-    
+    if (!localProps.sendName) {
+      localProps.sendName = props.sendName;
+    }
 
     if (props.goal) {
       id = props.goal._id;

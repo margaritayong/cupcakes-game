@@ -1,1 +1,109 @@
 /* CSS declarations go here */
+@import url('https://fonts.googleapis.com/css?family=Bitter|Open+Sans');
+/*
+font-family: 'Bitter', serif;
+font-family: 'Open Sans', sans-serif;
+*/
+html, body {
+	background-color: rgb(144, 218, 208);
+	height: 100%;
+}
+
+body {
+	margin: 0;
+  	display: flex;
+  	flex-direction: column;
+  	align-items: center;
+  	justify-content: center;
+}
+
+h1 {
+	font-family: 'Bitter', serif;
+	font-size: 72px;
+	line-height: 76px;
+	color: rgb(85, 122, 147);
+	text-align: center;
+}
+
+h2 {
+	font-family: 'Bitter', serif;
+	font-style: normal;
+	font-size: 24px;
+	line-height: 27px;
+	color: rgb(85, 122, 147);
+	text-align: center;
+}
+p {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.introText {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	margin-top: 100px;
+}
+
+.usernameBox {
+	/*left: 0;
+	top: 0;*/
+	width: 400px;
+	height: 42px;
+	border: 0;
+	border-bottom: 1px solid rgb(85, 122, 147);
+	font-size: 36px;
+	font-family: 'Bitter', serif;
+	background-color: rgb(144, 218, 208);
+	text-align: center;
+	padding: 10px;
+	color: rgb(242, 114, 136);
+}
+
+input:focus {
+	outline: none;
+}
+
+
+.nameBtn {
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	padding: 10px 20px;
+	font-size: 18px;
+	font-style: bold;
+	font-family: 'Open Sans', sans-serif;
+	background-color: rgb(85, 122, 147);
+	color: rgb(144, 218, 208);
+}
+
+.nameBtn:hover {
+	background-color: rgb(242, 114, 136);
+}
+
+.progressBtn {
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	padding: 10px 20px;
+	font-size: 18px;
+	font-style: bold;
+	font-family: 'Open Sans', sans-serif;
+	background-color: rgb(85, 122, 147);
+	color: rgb(242, 184, 162);
+}
+
+.progressBtn:hover {
+	background-color: rgb(242, 114, 136);
+}
+
+.balance {
+	color: rgb(242, 114, 136);
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hide {
+	display: none;
+}
